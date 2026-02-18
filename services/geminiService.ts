@@ -4,11 +4,8 @@ let client: GoogleGenAI | null = null;
 
 const getClient = (): GoogleGenAI => {
   if (!client) {
-    const apiKey = process.env.API_KEY || '';
-    if (!apiKey) {
-      console.warn("API Key not found in environment variables");
-    }
-    client = new GoogleGenAI({ apiKey });
+    // API key must be obtained exclusively from process.env.API_KEY
+    client = new GoogleGenAI({ apiKey: process.env.API_KEY });
   }
   return client;
 };
