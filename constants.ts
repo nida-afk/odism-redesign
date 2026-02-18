@@ -1,5 +1,5 @@
-import { Smartphone, Globe, Cpu, Server, Database, Layers, Code2, Rocket, ShieldCheck, Zap, ShoppingCart, Paintbrush, Search, BrainCircuit, Activity, BarChart3, Users, Globe2, Briefcase, Home, Truck, AppWindow, Wifi, LifeBuoy, PenTool, Megaphone, Cloud, Settings, Repeat } from 'lucide-react';
-import { ServiceItem, StatItem, TechItem, SolutionItem, OfficeLocation, JobItem, BlogPost } from './types';
+import { Smartphone, Cpu, Database, Layers, Code2, ShieldCheck, ShoppingCart, Paintbrush, BrainCircuit, Activity, Users, Home, Truck, AppWindow, Wifi, LifeBuoy, PenTool, Megaphone, Cloud, Settings } from 'lucide-react';
+import { ServiceItem, StatItem, TechItem, SolutionItem, OfficeLocation, BlogPost } from './types';
 
 export const STATS: StatItem[] = [
   { label: 'Developers', value: '50+', subtext: 'In-House Experts' },

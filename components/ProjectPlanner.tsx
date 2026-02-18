@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Cpu, Loader2 } from 'lucide-react';
+import { X, Send, Cpu, Loader2 } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { generateProjectAdvice } from '../services/geminiService';
 

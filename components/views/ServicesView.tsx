@@ -1,9 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { SERVICES } from '../../constants';
 import { GlassCard } from '../ui/GlassCard';
 import { AnimatedSection } from '../ui/AnimatedSection';
-import { CheckCircle2 } from 'lucide-react';
 
 export const ServicesView: React.FC = () => {
   // Group services by category

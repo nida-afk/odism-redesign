@@ -2,7 +2,7 @@ import React from 'react';
 import { COMPANY_INFO, STATS } from '../../constants';
 import { GlassCard } from '../ui/GlassCard';
 import { AnimatedSection } from '../ui/AnimatedSection';
-import { MapPin, Mail, Phone, Globe, Building2, Crosshair, Map as MapIcon } from 'lucide-react';
+import { Mail, Phone, Globe, Building2, Crosshair, Map as MapIcon } from 'lucide-react';
 
 export const AboutView: React.FC = () => {
   return (

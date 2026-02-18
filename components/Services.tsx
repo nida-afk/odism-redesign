@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { SERVICES } from '../constants';
 import { AnimatedSection } from './ui/AnimatedSection';
 import { ArrowUpRight } from 'lucide-react';
