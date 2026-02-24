@@ -117,7 +117,7 @@ export const CareersView: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-neon-green text-black font-bold text-lg py-4 rounded-xl hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(57,255,20,0.3)]"
+                    className="w-full bg-neon-green text-black font-bold text-lg py-4 rounded-xl hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,102,255,0.3)]"
                   >
                     {isSubmitting ? (
                       <>

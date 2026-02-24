@@ -114,7 +114,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onOpenContact })
             </p>
             <button 
               onClick={() => onNavigate('blog')}
-              className="px-12 py-4 rounded-full bg-gradient-to-r from-neon-purple to-neon-pink text-white font-bold hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,0,153,0.3)]"
+              className="px-12 py-4 rounded-full bg-gradient-to-r from-neon-purple to-neon-pink text-white font-bold hover:scale-105 transition-transform shadow-[0_0_20px_rgba(85,0,255,0.3)]"
             >
               Read Our Blog
             </button>
