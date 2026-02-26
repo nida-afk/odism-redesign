@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard } from '../ui/GlassCard';
 import { AnimatedSection } from '../ui/AnimatedSection';
 import { Send, Upload, CheckCircle, Loader2 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 export const CareersView: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // EmailJS Configuration
+  const SERVICE_ID = 'service_bf3h5lw';
+  const TEMPLATE_ID = 'template_4m4i7e3';
+  const PUBLIC_KEY = '1Ngumk8Q3ietcIvyO';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formRef.current) return;
+
     setIsSubmitting(true);
-    // Simulate complex submission process
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 2000);
+
+    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
+      .then(() => {
+        setIsSubmitting(false);
+        setIsSuccess(true);
+      })
+      .catch((error) => {
+        console.error('EmailJS Error:', error);
+        setIsSubmitting(false);
+        alert('Failed to send application. Please check your EmailJS credentials.');
+      });
   };
 
   const handleReset = () => {
@@ -63,7 +78,7 @@ export const CareersView: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
                   <div className="flex items-center gap-3 mb-8 border-b border-white/10 pb-6">
                     <div className="w-3 h-3 rounded-full bg-neon-green animate-pulse" />
                     <span className="font-mono text-neon-green text-sm tracking-wider">TALENT_ACQUISITION_PROTOCOL_V2.0</span>
@@ -72,22 +87,22 @@ export const CareersView: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-mono text-gray-400 uppercase tracking-wide">Full Name</label>
-                      <input type="text" required className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="Jane Doe" />
+                      <input name="user_name" type="text" required className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="Jane Doe" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-mono text-gray-400 uppercase tracking-wide">Email Address</label>
-                      <input type="email" required className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="jane@example.com" />
+                      <input name="user_email" type="email" required className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="jane@example.com" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-mono text-gray-400 uppercase tracking-wide">Phone Number</label>
-                      <input type="tel" required className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="+1 (555) 000-0000" />
+                      <input name="user_phone" type="tel" required className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="+1 (555) 000-0000" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-mono text-gray-400 uppercase tracking-wide">Area of Expertise</label>
-                      <select className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white">
+                      <select name="expertise" className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white">
                         <option>Mobile Development (React Native/Flutter)</option>
                         <option>Backend Development (Node/Go/PHP)</option>
                         <option>Frontend Development (React/Angular)</option>
@@ -102,13 +117,13 @@ export const CareersView: React.FC = () => {
 
                    <div className="space-y-2">
                       <label className="text-xs font-mono text-gray-400 uppercase tracking-wide">Portfolio / LinkedIn URL</label>
-                      <input type="url" className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="https://linkedin.com/in/..." />
+                      <input name="portfolio_url" type="url" className="w-full bg-black/40 border border-white/10 rounded-xl p-4 focus:border-neon-green focus:outline-none focus:ring-1 focus:ring-neon-green/30 transition-all text-white" placeholder="https://linkedin.com/in/..." />
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-xs font-mono text-gray-400 uppercase tracking-wide">Upload Resume (PDF)</label>
                     <div className="border-2 border-dashed border-white/10 rounded-xl p-8 flex flex-col items-center justify-center hover:border-neon-green/50 hover:bg-white/5 transition-all cursor-pointer group relative overflow-hidden">
-                      <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" accept=".pdf" />
+                      <input name="resume" type="file" className="absolute inset-0 opacity-0 cursor-pointer" accept=".pdf" />
                       <Upload className="w-8 h-8 text-gray-500 group-hover:text-neon-green mb-2 transition-colors" />
                       <span className="text-sm text-gray-400">Click to upload or drag and drop</span>
                     </div>

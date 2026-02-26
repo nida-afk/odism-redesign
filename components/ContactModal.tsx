@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Loader2, CheckCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -10,19 +11,33 @@ interface ContactModalProps {
 export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // EmailJS Configuration
+  const SERVICE_ID = 'service_bf3h5lw';
+  const TEMPLATE_ID = 'template_4m4i7e3';
+  const PUBLIC_KEY = '1Ngumk8Q3ietcIvyO';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formRef.current) return;
+
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      setTimeout(() => {
-        setIsSuccess(false);
-        onClose();
-      }, 2000);
-    }, 1500);
+
+    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
+      .then(() => {
+        setIsSubmitting(false);
+        setIsSuccess(true);
+        setTimeout(() => {
+          setIsSuccess(false);
+          onClose();
+        }, 2000);
+      })
+      .catch((error) => {
+        console.error('EmailJS Error:', error);
+        setIsSubmitting(false);
+        alert('Failed to send message. Please check your EmailJS credentials.');
+      });
   };
 
   return (
@@ -72,26 +87,26 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                   <p className="text-gray-400">Our team will analyze your requirements and get back to you shortly.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-mono text-gray-400 uppercase">Full Name</label>
-                      <input type="text" required className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="John Doe" />
+                      <input name="user_name" type="text" required className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="John Doe" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-mono text-gray-400 uppercase">Email Address</label>
-                      <input type="email" required className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="john@company.com" />
+                      <input name="user_email" type="email" required className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="john@company.com" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-mono text-gray-400 uppercase">Phone (Optional)</label>
-                      <input type="tel" className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="+1 (555) 000-0000" />
+                      <input name="user_phone" type="tel" className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="+1 (555) 000-0000" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-mono text-gray-400 uppercase">Project Type</label>
-                      <select className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white">
+                      <select name="project_type" className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white">
                         <option>Mobile App Development</option>
                         <option>Web Development</option>
                         <option>E-Commerce Solution</option>
@@ -104,7 +119,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
                   <div className="space-y-2">
                     <label className="text-sm font-mono text-gray-400 uppercase">Project Details</label>
-                    <textarea required rows={4} className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="Tell us about your idea, requirements, and timeline..." />
+                    <textarea name="message" required rows={4} className="w-full bg-black/50 border border-white/10 rounded-xl p-4 focus:border-neon-cyan focus:outline-none focus:ring-1 focus:ring-neon-cyan/50 transition-all text-white placeholder-gray-600" placeholder="Tell us about your idea, requirements, and timeline..." />
                   </div>
 
                   <div className="pt-4">
